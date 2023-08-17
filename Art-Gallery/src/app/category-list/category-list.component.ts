@@ -6,6 +6,7 @@ import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
@@ -15,6 +16,8 @@ export class CategoryListComponent implements OnInit {
   public categories: any;
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
+
+  
 
   constructor(private router: Router,
               private service: CategoryService,
@@ -72,4 +75,8 @@ export class CategoryListComponent implements OnInit {
       this.service.getCategories().subscribe(categories => this.categories = categories);
     }
   }
+
+  
+
+  
 }

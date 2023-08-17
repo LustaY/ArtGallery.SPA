@@ -6,6 +6,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { ItemComponent } from './item/item.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryComponent } from './category/category.component';
+import { NavComponent } from './nav/nav.component';
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'items', component: ItemListComponent },
@@ -14,7 +15,8 @@ const routes: Routes = [
     { path: 'categories', component: CategoryListComponent },
     { path: 'category', component: CategoryComponent },
     { path: 'category/:id', component: CategoryComponent },
-    { path: '**', redirectTo: 'home', pathMatch: 'full' }
+    { path: 'nav', component: NavComponent },
+    { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
 
 @NgModule({

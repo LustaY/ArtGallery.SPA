@@ -1,8 +1,31 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+<!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <a class="navbar-brand" [routerLink]="['/home']">Art-Gallery</a>
   
     <ul class="navbar-nav mr-auto">
       <a class="nav-link" [routerLink]="['/items']">Items</a>
       <a class="nav-link" [routerLink]="['/categories']">Categories</a>
     </ul>
-  </nav>
+  </nav> -->
+
+  <div class="admin-layout" [ngStyle]="{'grid-template-columns':showLeftNav?'20% 80%':'5% 95%'}">
+    <!-- for left nav -->
+    <div class="left-nav">
+      <!-- for brand name -->
+      <div class="brand">
+        <h2 [ngStyle]="{'font-size':showLeftNav?'30px':'10px'}">
+          Art Gallery
+        </h2>
+      </div>
+      <ol>
+        <li *ngFor="let cat of categories" routerLink="/category/{{cat.id}}">
+          <div class="left-nav-list-categories">
+            <fa-icon [ngStyle]="{'margin-left':showLeftNav?'':'10px'}" [icon]="userIcon"></fa-icon>
+            <span *ngIf="showLeftNav">
+              {{cat.name}}
+            </span>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+  

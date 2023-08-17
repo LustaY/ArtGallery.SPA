@@ -12,7 +12,7 @@
         <input name="description" #description="ngModel" [(ngModel)]="formData.description" class="form-control" required
           [ngClass]="{'is-invalid': form.controls['description']?.invalid && form.controls['description']?.touched}"
           placeholder="Description">
-        <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Please inform the category.</div>
+        <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Please inform the description.</div>
       </div>
       <div class="form-group text-center">
         <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Save</button>

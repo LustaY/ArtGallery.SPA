@@ -6,6 +6,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ItemService } from './_services/item.service';
@@ -18,6 +19,7 @@ import { ItemComponent } from './item/item.component';
 import { HomeComponent } from './home/home.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { NavComponent } from './nav/nav.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { NavComponent } from './nav/nav.component';
     FormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FontAwesomeModule,
   ],
   providers: [
     ItemService,
