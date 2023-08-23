@@ -5,6 +5,7 @@ import { Item } from 'src/app/_models/Item';
 import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from 'src/app/_services/category.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-item',
@@ -19,6 +20,7 @@ export class ItemComponent implements OnInit {
               private categoryService: CategoryService,
               private router: Router,
               private route: ActivatedRoute,
+              private location: Location,
               private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -31,8 +33,6 @@ export class ItemComponent implements OnInit {
     if (id != null) {
       this.service.getItemById(id).subscribe(item => {
         this.formData = item;
-        //const publishDate =  new Date(item.publishDate);
-        //this.formData.publishDate = { year: publishDate.getFullYear(), month: publishDate.getMonth(), day: publishDate.getDay() };
       }, err => {
         this.toastr.error('An error occurred on get the record.');
       });
@@ -49,7 +49,6 @@ export class ItemComponent implements OnInit {
 
   public onSubmit(form: NgForm) {
     form.value.categoryId = Number(form.value.categoryId);
-    //form.value.publishDate = this.convertStringToDate(form.value.publishDate);
     if (form.value.id === 0) {
       this.insertRecord(form);
     } else {
@@ -58,27 +57,30 @@ export class ItemComponent implements OnInit {
   }
 
   public insertRecord(form: NgForm) {
+    let catId=this.formData.categoryId;
     this.service.addItem(form.form.value).subscribe(() => {
       this.toastr.success('Registration successful');
       this.resetForm(form);
-      this.router.navigate(['/items']);
+      //this.location.back();
+      this.router.navigate([`/items/${catId}`]);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
   }
 
   public updateRecord(form: NgForm) {
+    let catId=this.formData.categoryId;
     this.service.updateItem(form.form.value.id, form.form.value).subscribe(() => {
       this.toastr.success('Updated successful');
       this.resetForm(form);
-      this.router.navigate(['/items']);
+      this.router.navigate([`/items/${catId}`]);
     }, () => {
       this.toastr.error('An error occurred on update the record.');
     });
   }
 
   public cancel() {
-    this.router.navigate(['/items']);
+    this.location.back();
   }
 
   private resetForm(form?: NgForm) {
@@ -93,11 +95,7 @@ export class ItemComponent implements OnInit {
       description: '',
       price: null,
       location: null,
-      categoryId: 0
+      categoryId: 0,
     };
-  }
-
-  private convertStringToDate(date) {
-    return new Date(`${date.year}-${date.month}-${date.day}`);
   }
 }

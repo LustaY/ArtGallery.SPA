@@ -8,8 +8,8 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryComponent } from './category/category.component';
 import { NavComponent } from './nav/nav.component';
 const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'items', component: ItemListComponent },
+    //{ path: 'home', component: HomeComponent },
+    { path: 'items/:id', component: ItemListComponent },
     { path: 'item', component: ItemComponent },
     { path: 'item/:id', component: ItemComponent },
     { path: 'categories', component: CategoryListComponent },

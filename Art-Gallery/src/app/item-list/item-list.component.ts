@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ParamMap, Router } from '@angular/router';
 import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Subject, switchMap } from 'rxjs';
+import { ActivatedRoute} from '@angular/router';
+import { CategoryService } from '../_services/category.service';
+import { Category } from '../_models/Category';
 
 @Component({
   selector: 'app-item-list',
@@ -13,30 +15,49 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class ItemListComponent implements OnInit {
   public items: any;
+  categories: Category[]=[];
+  
+  public catId: any;
   public listComplet: any;
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 
   constructor(private router: Router,
-              private service: ItemService,
+              private itemService: ItemService,
               private toastr: ToastrService,
-              private confirmationDialogService: ConfirmationDialogService) { }
+              private confirmationDialogService: ConfirmationDialogService,
+              private categoryService: CategoryService,
+              private route: ActivatedRoute,) { }
 
   ngOnInit() {
-    this.getValues();
 
-    this.searchValueChanged.pipe(debounceTime(1000))
-    .subscribe(() => {
-      this.search();
-    });
+
+    this.getCategories();
+    this.getValues();
+    
+
+    // this.searchValueChanged.pipe(debounceTime(1000))
+    // .subscribe(() => {
+    //   this.search();
+    // });
+    
+
   }
 
   private getValues() {
+    
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.itemService.getItemsByCategory(id).subscribe(item => {
+      this.items = item;
+    }, error => {
+      this.items = [];
+    }); 
+    
 
-    this.service.getItems().subscribe(items => {
-      this.items = items;
-      this.listComplet = items;
-    });
+    // this.service.getItems().subscribe(items => {
+    //   this.items = items;
+    //   this.listComplet = items;
+    // });
   }
 
   public addItem() {
@@ -50,7 +71,7 @@ export class ItemListComponent implements OnInit {
   public deleteItem(itemId: number) {
     this.confirmationDialogService.confirm('Atention', 'Do you really want to delete this item?')
       .then(() =>
-        this.service.deleteItem(itemId).subscribe(() => {
+        this.itemService.deleteItem(itemId).subscribe(() => {
           this.toastr.success('The item has been deleted');
           this.getValues();
         },
@@ -60,19 +81,26 @@ export class ItemListComponent implements OnInit {
       .catch(() => '');
   }
 
-  public searchItems() {
-    this.searchValueChanged.next(void 0);
+  // public searchItems() {
+  //   this.searchValueChanged.next(void 0);
+  // }
+  
+  getCategories():void{
+    this.categoryService.getCategories()
+    .subscribe(categories => this.categories = categories);
   }
 
-  private search() {
-    if (this.searchTerm !== '') {
-      this.service.searchItemsWithCategory(this.searchTerm).subscribe(item => {
-        this.items = item;
-      }, error => {
-        this.items = [];
-      });
-    } else {
-      this.service.getItems().subscribe(items => this.items = items);
-    }
-  }
+  // private search() {
+  //   const id = Number(this.route.snapshot.paramMap.get('id'));
+  //   const catName = String(this.categories[id].name);
+  //   if (this.searchTerm !== '') {
+  //     this.service.searchItemsWithCategory(catName).subscribe(item => {
+  //       this.items = item;
+  //     }, error => {
+  //       this.items = [];
+  //     });
+  //   } else {
+  //     this.service.getItems().subscribe(items => this.items = items);
+  //   }
+  // }
 }

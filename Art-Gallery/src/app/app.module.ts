@@ -20,6 +20,10 @@ import { HomeComponent } from './home/home.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { NavComponent } from './nav/nav.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LogModalComponent } from './log-modal/log-modal.component';
+import { AngularMaterialModule } from './angular-material.module';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ItemComponent,
     HomeComponent,
     ConfirmationDialogComponent,
-    NavComponent
+    NavComponent,
+    LogModalComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +46,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     FontAwesomeModule,
+    AngularMaterialModule,
+    DatePipe,
+    
   ],
   providers: [
     ItemService,
