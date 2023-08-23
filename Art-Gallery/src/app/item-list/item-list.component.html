@@ -1,49 +1,31 @@
-<div class="jumbtron">
-    <h1 class="display-4 text-center">Items</h1>
-  </div>
-  
-  <div class="col-md-12">
-    <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
-    <hr/>
-  
-    <!-- <div class="form-group">
-        <label for="Search">Search</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text bg-white">
-                <i class="fas fa-search"></i>
-            </div>
-          </div>
-          <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchItems()"/>
-        </div>
-      </div> -->
-      
-    <table class="table table-condensed table-bordered table-striped table-hover">
-        <thead>
-            <tr>
-            <th>Item Name</th>
-            <th>Author</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Location</th>
-            <th>Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of items">
-            <td>{{item.name}}</td>
-            <td>{{item.author}}</td>
-            <td>{{item.description.length > 25 ? (item.description | slice : 0:25) + '...' : item.description}}</td>
-            <td>{{item.categoryName}}</td>
-            <td>{{item.price | currency}}</td>
-            <td>{{item.location}}</td>
-            <td class="action-button-column">
-                <a title="Edit" (click)="editItem(item.id)"><i class="fas fa-edit"></i> </a>
-                <a title="Delete" (click)="deleteItem(item.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
-            </td>
-          </tr>
-        </tbody>
-  
-    </table>
-  </div>
+<div class="col-md-12">
+  <table class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+          <tr>
+          <th>Item Name</th>
+          <th>Author</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Location</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td>{{item.name}}</td>
+          <td>{{item.author}}</td>
+          <td>{{item.description.length > 25 ? (item.description | slice : 0:25) + '...' : item.description}}</td>
+          <td>{{item.categoryName}}</td>
+          <td>{{item.price | currency}}</td>
+          <td>{{item.location}}</td>
+          <td class="action-button-column">
+              <a title="Edit" (click)="editItem(item.id)"><i class="fas fa-edit"></i> </a>
+              <a title="Delete" (click)="deleteItem(item.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
+          </td>
+        </tr>
+      </tbody>
+
+  </table>
+  <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
+</div>

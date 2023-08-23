@@ -6,31 +6,35 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environment';
 import { LogService } from './log.service';
 import { Category } from '../_models/Category';
+import { CategoryService } from './category.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ItemService {
     private baseUrl: string = environment.baseUrl + 'api/';
-    categories: Category[]=[];
+    category: Category;
     constructor(
         private http: HttpClient,
         private logService: LogService,
+        private categoryService: CategoryService,
         ) { }
 
 
 
     private log(message: string, categoryId: number) {
-        
-
+        //this.categoryService.getCategoryById(categoryId).subscribe(
+        //     category => this.category = category
+        // );
+        //console.log(this.category.name);
         const date= new Date();
-        this.logService.add(date.toLocaleString() +": "+message+` in category=${categoryId}`);
+        this.logService.add(date.toLocaleString() +`: ${message} in category ${categoryId}`);
       }
 
     public addItem(item: Item) {
         return this.http.post(this.baseUrl + 'item', item)
         .pipe(
-            tap(_ => this.log(`add item ${item.name}`,item.categoryId))
+            tap(_ => this.log(`created item ${item.name}`,item.categoryId))
           );
     }
 
