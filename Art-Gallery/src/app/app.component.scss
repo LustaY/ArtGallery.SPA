@@ -1,0 +1,171 @@
+.active-link {
+    border: 2px solid white !important;
+}
+
+
+.main-content-nav {
+    padding: 10px;
+    width: 100%;
+    background-color: rgb(93, 90, 90);
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    align-items: center;
+
+    .brand {
+        h2 {
+            color: rgb(0, 0, 0);
+            text-align: center;
+        }
+
+        //margin-left: 2%;
+        //margin-right: 2%;
+        //margin-top: 2rem;
+    }
+
+    button {
+        padding: 6px 10px 6px 10px;
+        border: 1px solid white;
+        border-radius: 10px;
+        transition: all 0.2s ease-in-out;
+        width: 4rem;
+        color: rgb(27, 24, 201);
+
+        &:hover {
+            background-color: white;
+            color: rgb(27, 118, 160);
+        }
+    }
+
+    .user-info {
+        color: white;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        align-items: center;
+    }
+
+}
+
+.admin-layout {
+    display: grid;
+
+    .left-nav {
+        height: 100vh;
+        background-color: rgb(90, 143, 90);
+        color: white;
+        //align-items: center;
+
+        .categories {
+
+            // for let nav item
+            ol {
+                list-style: none;
+                //margin-left: 10%;
+                margin-right: 10%;
+
+                li {
+                    padding: 10px;
+                    transition: all 0.2s ease-in-out;
+                    border: 2px solid rgb(19, 19, 19);
+                    border-radius: 10px;
+                    margin-top: 10px;
+                    cursor: pointer;
+
+                    .left-nav-list-categories {
+                        //display: grid;
+                        //grid-template-columns: 30% 70%;
+                        align-items: left;
+                    }
+
+                    &:hover {
+                        border: 2px solid white;
+                        box-shadow: 4px 4px 20px rgb(153, 147, 147);
+                    }
+                }
+
+            }
+        }
+
+        .addCategory {
+            button {
+                margin: 10px;
+                padding: 25px 50px;
+                display: block;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+            }
+        }
+
+        .updates {
+            button {
+                margin-left: 10%;
+                //padding: 10%;
+                display: block;
+                //position: absolute;
+                //left: 0;
+                //bottom: 0;
+            }
+
+            ol {
+                list-style: none;
+                //margin-left: 10%;
+                margin-right: 10%;
+
+
+                li {
+                    padding: 10px;
+                    transition: all 0.2s ease-in-out;
+                    border: 2px solid rgb(19, 19, 19);
+                    border-radius: 10px;
+                    margin-top: 10px;
+                    cursor: pointer;
+
+                    button {
+                        margin: 0 auto;
+                        display: block;
+                    }
+
+                    &:hover {
+                        border: 2px solid white;
+                        box-shadow: 4px 4px 20px rgb(153, 147, 147);
+                    }
+                }
+
+            }
+        }
+
+
+
+        // for brand name
+
+        // for search input field
+        .search {
+            margin-left: 10%;
+            margin-right: 10%;
+            display: grid;
+            grid-template-columns: 90% 10%;
+            align-items: center;
+            background-color: rgb(50, 49, 49);
+            margin-top: 2rem;
+            border-radius: 20px;
+
+            input {
+                border-radius: 20px;
+                padding: 8px;
+                background-color: rgb(50, 49, 49);
+                outline: rgb(97, 92, 92);
+            }
+        }
+
+
+    }
+
+    .content-outlet {
+        height: 100vh;
+        width: 100%;
+        border: 1px solid black;
+        border-radius: 6px;
+        margin: 4px;
+        background-color: rgb(154, 151, 151);
+    }
+}

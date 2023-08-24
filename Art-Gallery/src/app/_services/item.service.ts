@@ -18,31 +18,32 @@ export class ItemService {
         private http: HttpClient,
         private logService: LogService,
         private categoryService: CategoryService,
-        ) { }
+    ) { }
 
 
 
     private log(message: string, categoryId: number) {
-        //this.categoryService.getCategoryById(categoryId).subscribe(
-        //     category => this.category = category
-        // );
-        //console.log(this.category.name);
-        const date= new Date();
-        this.logService.add(date.toLocaleString() +`: ${message} in category ${categoryId}`);
-      }
+        this.categoryService.getCategoryById(categoryId).subscribe(
+            (category) => {
+                this.category = category
+                const date = new Date();
+                this.logService.add(date.toLocaleString() + `: ${message} in category ${category.name}`);
+            }
+        );
+    }
 
     public addItem(item: Item) {
         return this.http.post(this.baseUrl + 'item', item)
-        .pipe(
-            tap(_ => this.log(`created item ${item.name}`,item.categoryId))
-          );
+            .pipe(
+                tap(_ => this.log(`created item ${item.name}`, item.categoryId))
+            );
     }
 
     public updateItem(id: number, item: Item) {
         return this.http.put(this.baseUrl + 'item/' + id, item)
-        .pipe(
-            tap(_ => this.log(`updated item ${item.name}`,item.categoryId))
-          );
+            .pipe(
+                tap(_ => this.log(`updated item ${item.name}`, item.categoryId))
+            );
     }
 
     public getItems(): Observable<Item[]> {
@@ -63,8 +64,8 @@ export class ItemService {
 
     public getItemsByCategory(categoryId: number): Observable<Item[]> {
         return this.http.get<Item[]>(`${this.baseUrl}item/get-items-by-category/${categoryId}`)
-        .pipe(
-            tap(_ => this.log(`fetched items `,categoryId))
-          );
+            .pipe(
+                tap(_ => this.log(`fetched items `, categoryId))
+            );
     }
 }

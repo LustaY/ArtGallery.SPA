@@ -27,14 +27,22 @@ export class ItemListComponent implements OnInit {
               private toastr: ToastrService,
               private confirmationDialogService: ConfirmationDialogService,
               private categoryService: CategoryService,
-              private route: ActivatedRoute,) { }
+              private route: ActivatedRoute,) {
+                
+               }
 
   ngOnInit() {
-
-
-    this.getCategories();
-    this.getValues();
-    
+    this.route.paramMap.subscribe(paramMap => {
+      const id = Number(paramMap.get('id'));    // get param from dictonary
+      this.itemService.getItemsByCategory(id).subscribe(item => {
+        this.items = item;
+      }, error => {
+        this.items = [];
+      });                    // load your data
+  });
+    //подписка на роутер.
+    //this.getCategories();
+    //this.getValues();
 
     // this.searchValueChanged.pipe(debounceTime(1000))
     // .subscribe(() => {

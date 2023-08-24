@@ -6,4 +6,6 @@ export class Item {
     price: number;
     location: number;
     categoryId: number;
+    pictureUrl: string;
+    minipictureUrl: string;
 }

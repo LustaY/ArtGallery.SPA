@@ -96,6 +96,8 @@ export class ItemComponent implements OnInit {
       price: null,
       location: null,
       categoryId: 0,
+      pictureUrl:'',
+      minipictureUrl: '',
     };
   }
 }

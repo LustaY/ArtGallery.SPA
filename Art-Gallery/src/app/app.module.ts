@@ -23,6 +23,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LogModalComponent } from './log-modal/log-modal.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { DatePipe } from '@angular/common';
+import { ParamMap, Router, RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { DatePipe } from '@angular/common';
     FontAwesomeModule,
     AngularMaterialModule,
     DatePipe,
+    RouterModule,
     
   ],
   providers: [

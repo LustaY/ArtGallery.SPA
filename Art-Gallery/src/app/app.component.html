@@ -1,29 +1,79 @@
-<div class="admin-layout" [ngStyle]="{'grid-template-columns':showLeftNav?'20% 80%':'5% 95%'}">
+<div class="main-content-nav">
+  <button (click)="showAndHideLeftNav()">
+    <fa-icon [icon]="faHamburger"></fa-icon>
+  </button>
+  <div class="brand">
+    <h2>
+      {{title}}
+    </h2>
+  </div>
+</div>
+<div class="admin-layout" [ngStyle]="{
 
-    <div class="left-nav">
+  'grid-template-columns':showLeftNav?'15% 85%':'5% 95%'
+}">
 
-      <div class="brand">
-        <h2 [ngStyle]="{'font-size':showLeftNav?'30px':'10px'}">
-          Art Gallery
-        </h2>
-      </div>
-      <ol>
-        <li *ngFor="let cat of categories" routerLink="items/{{cat.id}}">
-          <div class="left-nav-list-categories">
-            <fa-icon [ngStyle]="{'margin-left':showLeftNav?'':'10px'}" [icon]="userIcon"></fa-icon>
-            <span *ngIf="showLeftNav">
-                <button (click)="catOpen(cat.id)">
-                    {{cat.name}}
-                </button>
-            </span>
-          </div>
-        </li>
-      </ol>
+  <!-- for left nav -->
+  <div class="left-nav">
+    <div class="categories">
+    <ol>
+      <li *ngFor="let cat of categories" routerLink="items/{{cat.id}}">
+        <div class="left-nav-list-categories">
+          <fa-icon *ngIf="!showLeftNav" [icon]="userIcon"></fa-icon>
+          <span *ngIf="showLeftNav">
+            <button (click)="catOpen(cat.id)">
+              {{cat.name}}
+            </button>
+          </span>
+        </div>
+      </li>
+    </ol>
+  </div>
+    <div class="updates">
+    <button (click)="openDialog()">Updates</button>
+    </div>
+    <div class="addCategory">
+      <button (click)="addCategory()">
+        +
+      </button>
+
+    </div>
+
+
+  </div>
+  
+
+  <!-- for content -->
+  <div class="content">
+    <div class="content-outlet">
+      <router-outlet>
+      </router-outlet>
     </div>
   </div>
-<div>
-  <button mat-raised-button (click)="openDialog()">Logs</button>
 </div>
+
+
+<!-- <div class="left-nav">
+  <div class="brand">
+    <h2>
+      Art Gallery
+    </h2>
+  </div>
+  <ol>
+    <li *ngFor="let cat of categories" routerLink="items/{{cat.id}}">
+      <div class="left-nav-list-categories">
+        <fa-icon [icon]="userIcon"></fa-icon>
+        <span *ngIf="showLeftNav">
+            <button (click)="catOpen(cat.id)">
+                {{cat.name}}
+            </button>
+        </span>
+      </div>
+    </li>
+  </ol>
+</div>
+<button mat-raised-button (click)="openDialog()">Logs</button>
+
 <div class="content">
   <router-outlet></router-outlet>
-</div>
+</div> -->
