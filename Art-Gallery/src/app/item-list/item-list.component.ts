@@ -72,8 +72,8 @@ export class ItemListComponent implements OnInit {
     this.router.navigate(['/item']);
   }
 
-  public editItem(itemId: number) {
-    this.router.navigate(['/item/' + itemId]);
+  public viewDetails(itemId: number) {
+    this.router.navigate(['/item-details/' + itemId]);
   }
 
   public deleteItem(itemId: number) {

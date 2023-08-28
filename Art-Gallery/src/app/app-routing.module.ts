@@ -7,9 +7,12 @@ import { ItemComponent } from './item/item.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryComponent } from './category/category.component';
 import { NavComponent } from './nav/nav.component';
+import { DetailsComponent } from './details/details.component';
+
 const routes: Routes = [
     //{ path: 'home', component: HomeComponent },
     { path: 'items/:id', component: ItemListComponent },
+    { path: 'item-details/:id', component: DetailsComponent },
     { path: 'item', component: ItemComponent },
     { path: 'item/:id', component: ItemComponent },
     { path: 'categories', component: CategoryListComponent },
@@ -20,7 +23,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: "reload" })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

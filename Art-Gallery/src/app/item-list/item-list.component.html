@@ -1,4 +1,4 @@
-<div class="col-md-12">
+<!-- <div class="col-md-12">
   <table class="table table-condensed table-bordered table-striped table-hover">
       <thead>
           <tr>
@@ -28,4 +28,25 @@
 
   </table>
   <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
+</div> -->
+
+<div class="table">
+  <table>
+    <ng-container *ngFor="let item of items; let i = index">
+      <tr *ngIf="i%2 == 0">
+        <td>
+          <a title="View" (click)="viewDetails(item.id)">
+            {{item.name}}
+          </a>
+        </td>
+        <td *ngIf="items[i + 1].name != null">
+          <a title="View" (click)="viewDetails(items[i + 1].id)">
+            {{items[i + 1].name}}
+          </a>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+  <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
+
 </div>

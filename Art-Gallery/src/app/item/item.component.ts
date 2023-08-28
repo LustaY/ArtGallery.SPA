@@ -17,11 +17,13 @@ export class ItemComponent implements OnInit {
   public categories: any;
 
   constructor(public service: ItemService,
-              private categoryService: CategoryService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private location: Location,
-              private toastr: ToastrService) { }
+    private categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location,
+    private toastr: ToastrService) {
+
+  }
 
   ngOnInit() {
     this.resetForm();
@@ -29,7 +31,6 @@ export class ItemComponent implements OnInit {
     this.route.params.subscribe(params => {
       id = params['id'];
     });
-
     if (id != null) {
       this.service.getItemById(id).subscribe(item => {
         this.formData = item;
@@ -45,6 +46,9 @@ export class ItemComponent implements OnInit {
     }, err => {
       this.toastr.error('An error occurred on get the records.');
     });
+
+
+
   }
 
   public onSubmit(form: NgForm) {
@@ -57,7 +61,7 @@ export class ItemComponent implements OnInit {
   }
 
   public insertRecord(form: NgForm) {
-    let catId=this.formData.categoryId;
+    let catId = this.formData.categoryId;
     this.service.addItem(form.form.value).subscribe(() => {
       this.toastr.success('Registration successful');
       this.resetForm(form);
@@ -69,7 +73,7 @@ export class ItemComponent implements OnInit {
   }
 
   public updateRecord(form: NgForm) {
-    let catId=this.formData.categoryId;
+    let catId = this.formData.categoryId;
     this.service.updateItem(form.form.value.id, form.form.value).subscribe(() => {
       this.toastr.success('Updated successful');
       this.resetForm(form);
@@ -96,7 +100,7 @@ export class ItemComponent implements OnInit {
       price: null,
       location: null,
       categoryId: 0,
-      pictureUrl:'',
+      pictureUrl: '',
       minipictureUrl: '',
     };
   }

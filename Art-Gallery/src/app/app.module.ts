@@ -24,6 +24,7 @@ import { LogModalComponent } from './log-modal/log-modal.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { DatePipe } from '@angular/common';
 import { ParamMap, Router, RouterModule } from '@angular/router';
+import { DetailsComponent } from './details/details.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ParamMap, Router, RouterModule } from '@angular/router';
     HomeComponent,
     ConfirmationDialogComponent,
     NavComponent,
-    LogModalComponent
+    LogModalComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,

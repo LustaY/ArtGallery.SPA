@@ -1,12 +1,59 @@
-<div class="jumbtron">
-    <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
-      <h2 class="text-center text-primary">Item</h2>
-      <input type="hidden" name="id" #id="ngModel" [(ngModel)]="formData.id">
-      <div class="form-group">
-        <input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
+<table>
+    <tr>
+        <td>
+            <div>
+                <!-- <img src="{{itemDetail.pictureUrl}}"> -->
+            </div>
+        </td>
+        <td>
+            <div>
+                Name: {{itemDetail.name}}<br>
+                Author: {{itemDetail.author}}<br>
+                Description: {{itemDetail.description}}<br>
+                Category: {{itemDetail.categoryName}}<br>
+                Price:{{itemDetail.price}}<br>
+                Location:{{itemDetail.location}}<br>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <div>
+            <table>
+                <h2>Comments:</h2>
+                <tr *ngFor="let comment of comments">
+                    {{comment.commentAuthor}}: {{comment.commentValue}}
+                </tr>
+                <tr>
+                    
+                </tr>
+            </table>
+            <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
+                <h1 class="text-center text-primary">Add a comment</h1>
+                <input type="hidden" name="id" #id="ngModel" [(ngModel)]="commentData.id">
+                <input type="hidden" name="itemId" #itemId="ngModel" [(ngModel)]="itemDetail.id">
+                <input type="hidden"  #commentAuthor="ngModel" [(ngModel)]="randomAuthor" name="commentAuthor"/>
+                <div class="form-group">
+                    <input name="commentValue" #commentValue="ngModel" [(ngModel)]="commentData.commentValue" class="form-control" required
+                        [ngClass]="{'is-invalid': form.controls['commentValue']?.invalid && form.controls['commentValue']?.touched}"
+                        placeholder="Text">
+                    <div class="invalid-feedback" *ngIf="commentValue.invalid && commentValue.touched">Comment this!</div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Save</button>
+                    <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </tr>
+</table>
+
+
+
+
+<!--<input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
           [ngClass]="{'is-invalid': form.controls['name']?.invalid && form.controls['name']?.touched}" placeholder="Name">
          <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Please inform the item's name.</div>
-      </div>
       <div class="form-group">
         <input name="author" #author="ngModel" [(ngModel)]="formData.author" class="form-control" placeholder="Author"
           [ngClass]="{'is-invalid': form.controls['author']?.invalid && form.controls['author']?.touched}" required>
@@ -48,5 +95,4 @@
         <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
       </div>
   
-    </form>
-  </div>
+    </form> -->
