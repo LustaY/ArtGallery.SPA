@@ -4,6 +4,8 @@ import { NgForm } from '@angular/forms';
 import { Category } from 'src/app/_models/Category';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from 'src/app/_services/category.service';
+import { CategoryModalComponent } from '../category-modal/category-modal.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-category',
@@ -11,30 +13,32 @@ import { CategoryService } from 'src/app/_services/category.service';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  public formData: Category;
+  public formData: any;
+  
 
-  constructor(public service: CategoryService,
+  constructor(public categoryService: CategoryService,
               private router: Router,
               private route: ActivatedRoute,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              public dialogRef: MatDialogRef<CategoryModalComponent>,
+              ) { }
 
   ngOnInit() {
     this.resetForm();
+    // let id;
+    // this.route.params.subscribe(params => {
+    //   id = params['id'];
+    // });
 
-    let id;
-    this.route.params.subscribe(params => {
-      id = params['id'];
-    });
-
-    if (id != null) {
-      this.service.getCategoryById(id).subscribe(category => {
-        this.formData = category;
-      }, error => {
-        this.toastr.error('An error occurred on get the record.');
-      });
-    } else {
-      this.resetForm();
-    }
+    // if (id != null) {
+    //   this.service.getCategoryById(id).subscribe(category => {
+    //     this.formData = category;
+    //   }, error => {
+    //     this.toastr.error('An error occurred on get the record.');
+    //   });
+    // } else {
+    //   this.resetForm();
+    // }
   }
 
  private resetForm(form?: NgForm) {
@@ -58,17 +62,18 @@ export class CategoryComponent implements OnInit {
   }
 
   public insertRecord(form: NgForm) {
-    this.service.addCategory(form.form.value).subscribe(() => {
+    this.categoryService.addCategory(form.form.value).subscribe(() => {
       this.toastr.success('Registration successful');
       this.resetForm(form);
-      this.router.navigate(['/']);
+      this.dialogRef.close();
+      this.router.navigate([`/`]);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
   }
 
   public updateRecord(form: NgForm) {
-    this.service.updateCategory(form.form.value.id, form.form.value).subscribe(() => {
+    this.categoryService.updateCategory(form.form.value.id, form.form.value).subscribe(() => {
       this.toastr.success('Updated successful');
       this.resetForm(form);
       this.router.navigate(['/']);
@@ -78,6 +83,7 @@ export class CategoryComponent implements OnInit {
   }
 
   public cancel() {
-    this.router.navigate(['']);
+    this.dialogRef.close();
+    //this.router.navigate(['']);
   }
 }

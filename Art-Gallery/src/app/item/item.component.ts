@@ -6,6 +6,8 @@ import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from 'src/app/_services/category.service';
 import { Location } from '@angular/common';
+import { ItemModalComponent } from '../item-modal/item-modal.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-item',
@@ -13,7 +15,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent implements OnInit {
-  public formData: Item;
+  public formData: any;
   public categories: any;
 
   constructor(public service: ItemService,
@@ -21,7 +23,8 @@ export class ItemComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    public dialogRef: MatDialogRef<ItemModalComponent>,) {
 
   }
 
@@ -66,6 +69,7 @@ export class ItemComponent implements OnInit {
       this.toastr.success('Registration successful');
       this.resetForm(form);
       //this.location.back();
+      this.dialogRef.close();
       this.router.navigate([`/items/${catId}`]);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
@@ -84,7 +88,7 @@ export class ItemComponent implements OnInit {
   }
 
   public cancel() {
-    this.location.back();
+    this.dialogRef.close();
   }
 
   private resetForm(form?: NgForm) {

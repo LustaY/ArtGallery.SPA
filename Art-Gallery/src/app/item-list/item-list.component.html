@@ -1,52 +1,33 @@
-<!-- <div class="col-md-12">
-  <table class="table table-condensed table-bordered table-striped table-hover">
-      <thead>
-          <tr>
-          <th>Item Name</th>
-          <th>Author</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Price</th>
-          <th>Location</th>
-          <th>Options</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items">
-          <td>{{item.name}}</td>
-          <td>{{item.author}}</td>
-          <td>{{item.description.length > 25 ? (item.description | slice : 0:25) + '...' : item.description}}</td>
-          <td>{{item.categoryName}}</td>
-          <td>{{item.price | currency}}</td>
-          <td>{{item.location}}</td>
-          <td class="action-button-column">
-              <a title="Edit" (click)="editItem(item.id)"><i class="fas fa-edit"></i> </a>
-              <a title="Delete" (click)="deleteItem(item.id)" style="margin-left: 12px;"><i class="fas fa-trash-alt"></i> </a>
-          </td>
-        </tr>
-      </tbody>
-
-  </table>
-  <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
-</div> -->
-
-<div class="table">
-  <table>
-    <ng-container *ngFor="let item of items; let i = index">
-      <tr *ngIf="i%2 == 0">
-        <td>
+<div class="row">
+  <div class="card col-5 p-1" *ngFor="let i = index; let item of pageItems
+    | paginate: {
+        itemsPerPage: itemsPerPage,
+        currentPage: page,
+        totalItems: totalItems
+      }">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-8">
           <a title="View" (click)="viewDetails(item.id)">
             {{item.name}}
           </a>
-        </td>
-        <td *ngIf="items[i + 1].name != null">
-          <a title="View" (click)="viewDetails(items[i + 1].id)">
-            {{items[i + 1].name}}
-          </a>
-        </td>
-      </tr>
-    </ng-container>
-  </table>
-  <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
-
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<button type="button" class="btn btn-success" (click)="addItem()">New item</button>
+
+
+<div class="form-group">
+  <label for="Search">Search</label>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <div class="input-group-text bg-white">
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="searchItems()" />
+  </div>
+</div>
+<pagination-controls class="pagi" (pageChange)="getPage(page = $event)"></pagination-controls>

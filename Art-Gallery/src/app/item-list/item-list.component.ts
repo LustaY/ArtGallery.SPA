@@ -3,10 +3,12 @@ import { ParamMap, Router } from '@angular/router';
 import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
-import { Subject, switchMap } from 'rxjs';
+import { Subject, debounceTime, switchMap } from 'rxjs';
 import { ActivatedRoute} from '@angular/router';
 import { CategoryService } from '../_services/category.service';
 import { Category } from '../_models/Category';
+import { MatDialog } from '@angular/material/dialog';
+import { ItemModalComponent } from '../item-modal/item-modal.component';
 
 @Component({
   selector: 'app-item-list',
@@ -15,7 +17,13 @@ import { Category } from '../_models/Category';
 })
 export class ItemListComponent implements OnInit {
   public items: any;
+  public pageItems: any;
   categories: Category[]=[];
+  page: number = 1;
+  itemsPerPage = 6;
+  totalItems : any; 
+  categoryId:number;
+  itemsOnPage:number=6;
   
   public catId: any;
   public listComplet: any;
@@ -27,49 +35,57 @@ export class ItemListComponent implements OnInit {
               private toastr: ToastrService,
               private confirmationDialogService: ConfirmationDialogService,
               private categoryService: CategoryService,
-              private route: ActivatedRoute,) {
+              private route: ActivatedRoute,
+              public dialog: MatDialog,
+              ) {
                 
                }
 
   ngOnInit() {
+    
     this.route.paramMap.subscribe(paramMap => {
-      const id = Number(paramMap.get('id'));    // get param from dictonary
-      this.itemService.getItemsByCategory(id).subscribe(item => {
-        this.items = item;
-      }, error => {
-        this.items = [];
-      });                    // load your data
+      this.categoryId = Number(paramMap.get('id'));    // get param from dictonary
+      this.getItemsByCategory();
+      this.getPage(this.page);                    // load your data
   });
     //подписка на роутер.
-    //this.getCategories();
+    this.getCategories();
     //this.getValues();
 
-    // this.searchValueChanged.pipe(debounceTime(1000))
-    // .subscribe(() => {
-    //   this.search();
-    // });
-    
-
+    this.searchValueChanged.pipe(debounceTime(1000))
+    .subscribe(() => {
+      this.search();
+    });
   }
 
-  private getValues() {
-    
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.itemService.getItemsByCategory(id).subscribe(item => {
+  getItemsByCategory(){
+    this.itemService.getItemsByCategory(this.categoryId).subscribe(item => {
       this.items = item;
+      this.totalItems=this.items.length;
+      this.page=1;
     }, error => {
       this.items = [];
-    }); 
+    });
+  }
+  // private getValues() {
+  //   const id = Number(this.route.snapshot.paramMap.get('id'));
+  //   this.itemService.getItemsByCategory(id).subscribe(item => {
+  //     this.items = item;
+  //   }, error => {
+  //     this.items = [];
+  //   }); 
     
 
     // this.service.getItems().subscribe(items => {
     //   this.items = items;
     //   this.listComplet = items;
     // });
-  }
+  //}
 
   public addItem() {
-    this.router.navigate(['/item']);
+    const dialogRef = this.dialog.open(ItemModalComponent, {
+      width: '60%',
+    });
   }
 
   public viewDetails(itemId: number) {
@@ -81,34 +97,47 @@ export class ItemListComponent implements OnInit {
       .then(() =>
         this.itemService.deleteItem(itemId).subscribe(() => {
           this.toastr.success('The item has been deleted');
-          this.getValues();
+          //this.getValues();
         },
           err => {
             this.toastr.error('Failed to delete the item.');
           }))
       .catch(() => '');
   }
-
-  // public searchItems() {
-  //   this.searchValueChanged.next(void 0);
-  // }
   
   getCategories():void{
     this.categoryService.getCategories()
     .subscribe(categories => this.categories = categories);
   }
 
-  // private search() {
-  //   const id = Number(this.route.snapshot.paramMap.get('id'));
-  //   const catName = String(this.categories[id].name);
-  //   if (this.searchTerm !== '') {
-  //     this.service.searchItemsWithCategory(catName).subscribe(item => {
-  //       this.items = item;
-  //     }, error => {
-  //       this.items = [];
-  //     });
-  //   } else {
-  //     this.service.getItems().subscribe(items => this.items = items);
-  //   }
-  // }
+  public getPage(page:number){
+    this.itemService.getItemsByPage(this.categoryId,this.page,this.itemsOnPage)
+    .subscribe((items)=>{
+      this.pageItems=items;
+    })
+  }
+
+  public searchItems() {
+    this.searchValueChanged.next(void 0);
+  }
+  
+  private search() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.searchTerm !== '') {
+      this.itemService.searchItemsWithCategory(this.searchTerm).subscribe(items => {
+        this.pageItems=[];
+        items.forEach((x)=>{
+          if(x.categoryId==id)
+            this.pageItems.push(x);
+        })
+        this.totalItems=this.pageItems.length;
+        this.page=1;
+      }, error => {
+        this.pageItems = [];
+      });
+    } else {
+      this.getItemsByCategory();
+      this.getPage(this.page);
+    }
+  }
 }

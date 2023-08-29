@@ -68,4 +68,8 @@ export class ItemService {
                 tap(_ => this.log(`fetched items `, categoryId))
             );
     }
+
+    public getItemsByPage(categoryId:number, page:number, size:number){
+        return this.http.get<Item[]>(`${this.baseUrl}item/get-items-by-page/categoryId=${categoryId}&page=${page}&size=${size}`)
+    }
 }

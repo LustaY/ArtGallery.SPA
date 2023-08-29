@@ -17,6 +17,7 @@ import {
   faAmbulance,
   faAnchorCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { CategoryModalComponent } from './category-modal/category-modal.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -60,7 +61,10 @@ export class AppComponent {
   }
 
   public addCategory() {
-    this.router.navigate(["/category"]);
+    const dialogRef = this.dialog.open(CategoryModalComponent, {
+      width: '60%',
+    });
+    //this.router.navigate(["/category"]);
   }
 
   openDialog(): void {

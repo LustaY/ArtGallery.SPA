@@ -1,51 +1,67 @@
 <table>
-    <tr>
-        <td>
-            <div>
-                <!-- <img src="{{itemDetail.pictureUrl}}"> -->
-            </div>
-        </td>
-        <td>
-            <div>
-                Name: {{itemDetail.name}}<br>
-                Author: {{itemDetail.author}}<br>
-                Description: {{itemDetail.description}}<br>
-                Category: {{itemDetail.categoryName}}<br>
-                Price:{{itemDetail.price}}<br>
-                Location:{{itemDetail.location}}<br>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <div>
-            <table>
-                <h2>Comments:</h2>
-                <tr *ngFor="let comment of comments">
+  <tr>
+    <td>
+      <div>
+        <!-- <img src="{{itemDetail.pictureUrl}}"> -->
+      </div>
+    </td>
+    <td>
+      <div *ngIf="itemDetail">
+        Name: {{itemDetail.name}}<br>
+        Author: {{itemDetail.author}}<br>
+        Description: {{itemDetail.description}}<br>
+        Category: {{itemDetail.categoryName}}<br>
+        Price:{{itemDetail.price}}<br>
+        Location:{{itemDetail.location}}<br>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <div>
+      <table>
+        <h2>Rating:</h2>
+        <tr>
+          <ng-template #t let-fill="fill" let-index="index">
+            <i class="bi-star-fill">
+              <i *ngIf="fill > 0" class="bi-star-fill filled" [style.width.%]="fill" (click)="toggleRating(index+1)"
+                type="submit"></i>
+            </i>
+          </ng-template>
+          <ngb-rating [(rate)]="itemRating" [starTemplate]="t" [readonly]="false" [max]="5"></ngb-rating>
+        </tr>
+        <h2>Comments:</h2>
+        <!-- <tr *ngFor="let comment of comments">
                     {{comment.commentAuthor}}: {{comment.commentValue}}
-                </tr>
-                <tr>
-                    
-                </tr>
-            </table>
-            <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
-                <h1 class="text-center text-primary">Add a comment</h1>
-                <input type="hidden" name="id" #id="ngModel" [(ngModel)]="commentData.id">
-                <input type="hidden" name="itemId" #itemId="ngModel" [(ngModel)]="itemDetail.id">
-                <input type="hidden"  #commentAuthor="ngModel" [(ngModel)]="randomAuthor" name="commentAuthor"/>
-                <div class="form-group">
-                    <input name="commentValue" #commentValue="ngModel" [(ngModel)]="commentData.commentValue" class="form-control" required
-                        [ngClass]="{'is-invalid': form.controls['commentValue']?.invalid && form.controls['commentValue']?.touched}"
-                        placeholder="Text">
-                    <div class="invalid-feedback" *ngIf="commentValue.invalid && commentValue.touched">Comment this!</div>
-                </div>
-                <div class="form-group text-center">
-                    <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Save</button>
-                    <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
-                </div>
-
-            </form>
-        </div>
-    </tr>
+                </tr> -->
+        <tr>
+          <cdk-virtual-scroll-viewport itemSize="25" class="example-viewport">
+            <div *cdkVirtualFor="let comment of comments" class="example-item">{{comment.commentAuthor}}:
+              {{comment.commentValue}}</div>
+          </cdk-virtual-scroll-viewport>
+        </tr>
+      </table>
+      <div *ngIf="itemDetail">
+        <form #form="ngForm" (submit)="onSubmitComment(form)" autocomplete="off" class="col-md-5 form">
+          <h1 class="text-center text-primary">Add a comment</h1>
+          <input type="hidden" name="id" #id="ngModel" [(ngModel)]="commentData.id">
+          <input type="hidden" name="itemId" #itemId="ngModel" [(ngModel)]="itemDetail.id">
+          <input type="hidden" #commentAuthor="ngModel" [(ngModel)]="randomAuthor" name="commentAuthor" />
+          <div class="form-group">
+            <input name="commentValue" #commentValue="ngModel" [(ngModel)]="commentData.commentValue"
+              class="form-control" required
+              [ngClass]="{'is-invalid': form.controls['commentValue']?.invalid && form.controls['commentValue']?.touched}"
+              placeholder="Text">
+            <div class="invalid-feedback" *ngIf="commentValue.invalid && commentValue.touched">Comment this!
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Save</button>
+            <!-- <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </tr>
 </table>
 
 

@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +27,8 @@ import { AngularMaterialModule } from './angular-material.module';
 import { DatePipe } from '@angular/common';
 import { ParamMap, Router, RouterModule } from '@angular/router';
 import { DetailsComponent } from './details/details.component';
+import { CategoryModalComponent } from './category-modal/category-modal.component';
+import { ItemModalComponent } from './item-modal/item-modal.component';
 
 
 @NgModule({
@@ -38,7 +42,9 @@ import { DetailsComponent } from './details/details.component';
     ConfirmationDialogComponent,
     NavComponent,
     LogModalComponent,
-    DetailsComponent
+    DetailsComponent,
+    CategoryModalComponent,
+    ItemModalComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +58,10 @@ import { DetailsComponent } from './details/details.component';
     AngularMaterialModule,
     DatePipe,
     RouterModule,
-    
+    NgbRatingModule,
+    NgxPaginationModule,
+    ScrollingModule
+
   ],
   providers: [
     ItemService,

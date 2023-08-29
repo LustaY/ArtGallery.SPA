@@ -33,9 +33,9 @@ export class CommentService {
 
     public getCommentsByItem(itemId: number): Observable<Comment[]> {
         return this.http.get<Comment[]>(`${this.baseUrl}Comment/get-comments-by-item/${itemId}`)
-            .pipe(
-                tap(_ => this.log(` get comments `, itemId))
-            );
+            // .pipe(
+            //     tap(_ => this.log(` get comments `, itemId))
+            // );
     }
 
     public getById(commentId: number): Observable<Comment> {
