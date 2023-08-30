@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
-import { CategoryService } from 'src/app/_services/category.service';
-import { Location } from '@angular/common';
 import { CommentService } from '../_services/comment.service';
 import { Comment } from '../_models/Comment';
 import { RatingService } from '../_services/rating.service';
@@ -35,6 +34,8 @@ export class DetailsComponent implements OnInit {
   public itemRating: number = 0;
   public id:number;
   public rate:Rating;
+  public pictureUrl: string='';
+
 
 
   constructor(
@@ -89,6 +90,8 @@ export class DetailsComponent implements OnInit {
         });
     });
   }
+
+  
 
   toggleRating(rating:number){
     //console.log(rating);

@@ -17,8 +17,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class ItemComponent implements OnInit {
   public formData: any;
   public categories: any;
+  public filePath: any;
+  public file: any | null = null
 
-  constructor(public service: ItemService,
+  constructor(
+    public itemService: ItemService,
     private categoryService: CategoryService,
     private router: Router,
     private route: ActivatedRoute,
@@ -35,7 +38,7 @@ export class ItemComponent implements OnInit {
       id = params['id'];
     });
     if (id != null) {
-      this.service.getItemById(id).subscribe(item => {
+      this.itemService.getItemById(id).subscribe(item => {
         this.formData = item;
       }, err => {
         this.toastr.error('An error occurred on get the record.');
@@ -49,9 +52,6 @@ export class ItemComponent implements OnInit {
     }, err => {
       this.toastr.error('An error occurred on get the records.');
     });
-
-
-
   }
 
   public onSubmit(form: NgForm) {
@@ -63,10 +63,35 @@ export class ItemComponent implements OnInit {
     }
   }
 
+  public getFile(name:string) {
+    this.itemService.getFileFromDisk(name).subscribe((file) => {
+      this.filePath = file["href"];
+      //console.log(file);
+
+    })
+  }
+
+  public uploadFile() {
+    if (this.file) {
+    this.itemService.getUploadLink(this.file.name).subscribe((link) => {
+      this.itemService.uploadFileOnDisk(link['href'], this.file).subscribe(()=>{
+      });
+    })
+  }
+  }
+
+  onChange(event: any) {
+    const file: File = event.target.files[0]
+    if (file) {
+      this.file = file
+    }
+  }
+
   public insertRecord(form: NgForm) {
     let catId = this.formData.categoryId;
-    this.service.addItem(form.form.value).subscribe(() => {
+    this.itemService.addItem(form.form.value).subscribe(() => {
       this.toastr.success('Registration successful');
+      this.uploadFile();
       this.resetForm(form);
       //this.location.back();
       this.dialogRef.close();
@@ -78,7 +103,7 @@ export class ItemComponent implements OnInit {
 
   public updateRecord(form: NgForm) {
     let catId = this.formData.categoryId;
-    this.service.updateItem(form.form.value.id, form.form.value).subscribe(() => {
+    this.itemService.updateItem(form.form.value.id, form.form.value).subscribe(() => {
       this.toastr.success('Updated successful');
       this.resetForm(form);
       this.router.navigate([`/items/${catId}`]);

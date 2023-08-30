@@ -2,11 +2,13 @@
     <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
       <h2 class="text-center text-primary">Item</h2>
       <input type="hidden" name="id" #id="ngModel" [(ngModel)]="formData.id">
+      <input *ngIf="file" type="hidden" name="pictureUrl" #pictureUrl="ngModel" [(ngModel)]="file.name">
       <div class="form-group">
         <input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
           [ngClass]="{'is-invalid': form.controls['name']?.invalid && form.controls['name']?.touched}" placeholder="Name">
          <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Please inform the item's name.</div>
       </div>
+      <input type="file" class="file-input" (change)="onChange($event)" #fileUpload />
       <div class="form-group">
         <input name="author" #author="ngModel" [(ngModel)]="formData.author" class="form-control" placeholder="Author"
           [ngClass]="{'is-invalid': form.controls['author']?.invalid && form.controls['author']?.touched}" required>
@@ -39,7 +41,7 @@
         <textarea name="location" #location="ngModel" [(ngModel)]="formData.location" class="form-control"
           placeholder="Location"
           [ngClass]="{'is-invalid': form.controls['location']?.invalid && form.controls['location']?.touched}"
-           rows="4"></textarea>
+           ></textarea>
         <div class="invalid-feedback" *ngIf="location.invalid && location.touched">Please inform the location
         </div>
       </div>
@@ -49,4 +51,7 @@
       </div>
   
     </form>
+    <!-- <button class="btn btn-default" type="button" (click)="getFile()">File</button><br> -->
+    
+    <!-- <button (click)="uploadFile()">Upload the file</button> -->
   </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Item } from '../_models/Item';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environment';
 import { LogService } from './log.service';
@@ -14,6 +14,10 @@ import { CategoryService } from './category.service';
 export class ItemService {
     private baseUrl: string = environment.baseUrl + 'api/';
     category: Category;
+    file: File | null = null
+    headers = new HttpHeaders()
+        .set('Accept', 'application/json')
+        .set('Authorization', ' OAuth y0_AgAAAAAHoXZFAAppswAAAADrbRi6LOHaN5A2QHagldfIGzlr1hvfFNA');
     constructor(
         private http: HttpClient,
         private logService: LogService,
@@ -30,6 +34,18 @@ export class ItemService {
                 this.logService.add(date.toLocaleString() + `: ${message} in category ${category.name}`);
             }
         );
+    }
+
+    public getFileFromDisk(name:string):Observable<JSON> {
+        return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/download?path=' + '/ArtGallery/' + name, { 'headers': this.headers })
+    }
+
+    public getUploadLink(name: string):Observable<JSON> {
+        return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' + '/ArtGallery/' + name, { 'headers': this.headers });
+    }
+
+    public uploadFileOnDisk(link: string,file:File) {
+        return this.http.put(link,file);
     }
 
     public addItem(item: Item) {
@@ -69,7 +85,7 @@ export class ItemService {
             );
     }
 
-    public getItemsByPage(categoryId:number, page:number, size:number){
+    public getItemsByPage(categoryId: number, page: number, size: number) {
         return this.http.get<Item[]>(`${this.baseUrl}item/get-items-by-page/categoryId=${categoryId}&page=${page}&size=${size}`)
     }
 }
