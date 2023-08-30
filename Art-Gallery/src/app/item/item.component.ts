@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Item } from 'src/app/_models/Item';
 import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from 'src/app/_services/category.service';
@@ -25,7 +24,6 @@ export class ItemComponent implements OnInit {
     private categoryService: CategoryService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location,
     private toastr: ToastrService,
     public dialogRef: MatDialogRef<ItemModalComponent>,) {
 
@@ -63,21 +61,15 @@ export class ItemComponent implements OnInit {
     }
   }
 
-  public getFile(name:string) {
-    this.itemService.getFileFromDisk(name).subscribe((file) => {
-      this.filePath = file["href"];
-      //console.log(file);
 
-    })
-  }
 
   public uploadFile() {
     if (this.file) {
-    this.itemService.getUploadLink(this.file.name).subscribe((link) => {
-      this.itemService.uploadFileOnDisk(link['href'], this.file).subscribe(()=>{
-      });
-    })
-  }
+      this.itemService.getUploadLink(this.formData.name).subscribe((link) => {
+        this.itemService.uploadFileOnDisk(link['href'], this.file).subscribe(() => {
+        });
+      })
+    }
   }
 
   onChange(event: any) {
@@ -93,7 +85,6 @@ export class ItemComponent implements OnInit {
       this.toastr.success('Registration successful');
       this.uploadFile();
       this.resetForm(form);
-      //this.location.back();
       this.dialogRef.close();
       this.router.navigate([`/items/${catId}`]);
     }, () => {

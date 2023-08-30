@@ -40,6 +40,14 @@ export class ItemService {
         return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/download?path=' + '/ArtGallery/' + name, { 'headers': this.headers })
     }
 
+    public getSmallFileFromDisk(link:string):Observable<JSON> {
+        return this.http.get<JSON>(link, { 'headers': this.headers })
+    }
+
+    public getFileResourceFromDisk(name:string):Observable<JSON> {
+        return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources?path=' + '/ArtGallery/' + name, { 'headers': this.headers })
+    }
+
     public getUploadLink(name: string):Observable<JSON> {
         return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' + '/ArtGallery/' + name, { 'headers': this.headers });
     }

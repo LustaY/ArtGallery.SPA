@@ -43,8 +43,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.router.events.subscribe(events => {
-      this.categoryService.getCategories()
-        .subscribe(categories => this.categories = categories);
+      this.getCategories();
     });
   }
   getCategories(): void {

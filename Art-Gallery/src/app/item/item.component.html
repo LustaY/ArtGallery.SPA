@@ -2,7 +2,7 @@
     <form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off" class="col-md-5 form">
       <h2 class="text-center text-primary">Item</h2>
       <input type="hidden" name="id" #id="ngModel" [(ngModel)]="formData.id">
-      <input *ngIf="file" type="hidden" name="pictureUrl" #pictureUrl="ngModel" [(ngModel)]="file.name">
+      <input *ngIf="file" type="hidden" name="pictureUrl" #pictureUrl="ngModel" [(ngModel)]="formData.name">
       <div class="form-group">
         <input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
           [ngClass]="{'is-invalid': form.controls['name']?.invalid && form.controls['name']?.touched}" placeholder="Name">

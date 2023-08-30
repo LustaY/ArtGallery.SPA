@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -8,13 +8,14 @@ import { CommentService } from '../_services/comment.service';
 import { Comment } from '../_models/Comment';
 import { RatingService } from '../_services/rating.service';
 import { Rating } from '../_models/Rating';
+import { NavigationEvent } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css'],
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
   public commentData: Comment;
   public ratingData: Rating;
   public categories: any;
@@ -32,9 +33,10 @@ export class DetailsComponent implements OnInit {
   public comments: Comment[] = [];
   public ratings: Rating[] = [];
   public itemRating: number = 0;
-  public id:number;
-  public rate:Rating;
-  public pictureUrl: string='';
+  public id: number;
+  public rate: Rating;
+  public pictureUrl: string = '';
+  public eventsSubscription: any;
 
 
 
@@ -47,9 +49,7 @@ export class DetailsComponent implements OnInit {
     private ratingService: RatingService
   ) {
 
-    this.route.params.subscribe(params => {
-      this.id = params['id'];
-    });
+
 
     //подписка на роутер.
     //this.getCategories();
@@ -64,58 +64,80 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.route.params.subscribe(params => {
+    //   this.id = params['id'];
+    // });
     this.resetForm();
     this.resetRating();
     //let id;
-    
 
-    this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
-    this.router.events.subscribe(events => {
+
+    //this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
+    this.router.events.subscribe((event) => {
+      this.route.paramMap.subscribe(paramMap => {
+        this.id = Number(paramMap.get('id'));
+        this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
+        this.commentService.getCommentsByItem(this.id)
+          .subscribe(comments => {
+            this.comments = comments;
+          }, err => {
+            //if (event instanceof NavigationEnd)
+              this.toastr.error('No comments on this Item');
+          });
+  
       this.itemService.getItemById(this.id)
         .subscribe(item => {
           this.itemDetail = item;
+          this.getFile(item.pictureUrl);
         });
-      this.commentService.getCommentsByItem(this.id)
-        .subscribe(comments => {
-          this.comments = comments;
-        });
-        
+  
+  
+  
       this.ratingService.getRatingsByItem(this.id)
         .subscribe(rating => {
           rating.forEach((x) => {
             this.itemRating += x.ratingValue;
           });
           this.itemRating /= rating.length
-          //console.log( "events "+this.itemRating);
         });
+      });
     });
+    
+
+    
   }
 
-  
+  ngOnDestroy(): void {
+    //this.eventsSubscription.unsubscribe();
+  }
 
-  toggleRating(rating:number){
+  public getFile(name: string) {
+    this.itemService.getFileFromDisk(name).subscribe((file) => {
+      //console.log(file["sizes"]);
+      this.pictureUrl = file["href"];
+
+    })
+  }
+
+  toggleRating(rating: number) {
     //console.log(rating);
-    
-    this.ratingData.itemId=this.id;
-    this.ratingData.ratingValue=rating;
-    this.ratingService.addRating(this.ratingData).subscribe(()=>{
+
+    this.ratingData.itemId = this.id;
+    this.ratingData.ratingValue = rating;
+    this.ratingService.addRating(this.ratingData).subscribe(() => {
       this.toastr.success('Rating added succesfully');
       this.resetRating();
-      console.log( rating);
+      console.log(rating);
       this.router.navigate([`/item-details/${this.id}`]);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
-    
+
   }
 
   public onSubmitComment(form: NgForm) {
     //form.value.categoryId = Number(form.value.categoryId);
-    if (form.value.id === 0) {
       this.insertRecord(form);
-    } else {
-      this.updateRecord(form);
-    }
   }
 
   public insertRecord(form: NgForm) {
@@ -130,6 +152,7 @@ export class DetailsComponent implements OnInit {
     // });
     //let itemId = form.form.valu;
     let itemId = this.itemDetail.id;
+    console.log(form.form.value);
     this.commentService.addComment(form.form.value).subscribe(() => {
       this.toastr.success('Comment added succesfully');
       this.resetForm(form);
@@ -155,7 +178,7 @@ export class DetailsComponent implements OnInit {
     //this.location.back();
   }
 
-  private resetRating(){
+  private resetRating() {
     this.ratingData = {
       id: 0,
       itemId: 0,
@@ -175,7 +198,7 @@ export class DetailsComponent implements OnInit {
       commentValue: '',
     };
 
-    
+
   }
 
 }

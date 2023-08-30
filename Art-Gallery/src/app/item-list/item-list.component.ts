@@ -44,6 +44,7 @@ export class ItemListComponent implements OnInit {
   ngOnInit() {
     
     this.route.paramMap.subscribe(paramMap => {
+      this.page=1;
       this.categoryId = Number(paramMap.get('id'));    // get param from dictonary
       this.getItemsByCategory();
       this.getPage(this.page);                    // load your data
@@ -60,8 +61,8 @@ export class ItemListComponent implements OnInit {
 
   getItemsByCategory(){
     this.itemService.getItemsByCategory(this.categoryId).subscribe(item => {
-      this.items = item;
-      this.totalItems=this.items.length;
+      //this.items = item;
+      this.totalItems=item.length;
       this.page=1;
     }, error => {
       this.items = [];
