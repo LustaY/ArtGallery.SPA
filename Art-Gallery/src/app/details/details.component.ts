@@ -73,26 +73,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
 
     //this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
+    this.route.paramMap.subscribe(paramMap => {
+      this.id = Number(paramMap.get('id'));
+
+    });
+
+    this.itemService.getItemById(this.id)
+      .subscribe(item => {
+        this.itemDetail = item;
+        this.getFile(item.pictureUrl);
+      });
     this.router.events.subscribe((event) => {
-      this.route.paramMap.subscribe(paramMap => {
-        this.id = Number(paramMap.get('id'));
-        this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
-        this.commentService.getCommentsByItem(this.id)
-          .subscribe(comments => {
-            this.comments = comments;
-          }, err => {
-            //if (event instanceof NavigationEnd)
-              this.toastr.error('No comments on this Item');
-          });
-  
-      this.itemService.getItemById(this.id)
-        .subscribe(item => {
-          this.itemDetail = item;
-          this.getFile(item.pictureUrl);
+
+      this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
+      this.commentService.getCommentsByItem(this.id)
+        .subscribe(comments => {
+          this.comments = comments;
         });
-  
-  
-  
+
+
+
+
+
       this.ratingService.getRatingsByItem(this.id)
         .subscribe(rating => {
           rating.forEach((x) => {
@@ -100,11 +102,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
           });
           this.itemRating /= rating.length
         });
-      });
     });
-    
 
-    
+
+
+
   }
 
   ngOnDestroy(): void {
@@ -137,7 +139,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   public onSubmitComment(form: NgForm) {
     //form.value.categoryId = Number(form.value.categoryId);
-      this.insertRecord(form);
+    this.insertRecord(form);
   }
 
   public insertRecord(form: NgForm) {
