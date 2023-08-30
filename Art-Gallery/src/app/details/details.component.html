@@ -1,12 +1,12 @@
-<table>
+<table >
   <tr>
     <td>
       <div>
-        <img src="{{pictureUrl}}">
+        <img src="{{pictureUrl}}" style="width: 55vw; max-width: 330px;"/>
       </div>
     </td>
-    <td>
-      <div *ngIf="itemDetail">
+    <td style="vertical-align: top;">
+      <div *ngIf="itemDetail" >
         Name: {{itemDetail.name}}<br>
         Author: {{itemDetail.author}}<br>
         Description: {{itemDetail.description}}<br>
@@ -35,8 +35,9 @@
                 </tr> -->
         <tr>
           <cdk-virtual-scroll-viewport itemSize="25" class="example-viewport">
-            <div *cdkVirtualFor="let comment of comments" class="example-item">{{comment.commentAuthor}}:
-              {{comment.commentValue}}</div>
+            <div *cdkVirtualFor="let comment of comments" class="example-item">
+              {{comment.commentAuthor}}:{{comment.commentValue}}
+            </div>
           </cdk-virtual-scroll-viewport>
         </tr>
       </table>
@@ -45,7 +46,7 @@
           <h1 class="text-center text-primary">Add a comment</h1>
           <input type="hidden" name="id" #id="ngModel" [(ngModel)]="commentData.id">
           <input type="hidden" name="itemId" #itemId="ngModel" [(ngModel)]="itemDetail.id">
-          <input type="hidden" name="commentAuthor" #commentAuthor="ngModel" [(ngModel)]="randomAuthor"  />
+          <input type="hidden" name="commentAuthor" #commentAuthor="ngModel" [(ngModel)]="randomAuthor" />
           <div class="form-group">
             <input name="commentValue" #commentValue="ngModel" [(ngModel)]="commentData.commentValue"
               class="form-control" required

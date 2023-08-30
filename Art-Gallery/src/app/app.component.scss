@@ -49,7 +49,7 @@
     display: grid;
 
     .left-nav {
-        height: 100vh;
+        //height: 100vh;
         background-color: rgb(90, 143, 90);
         color: white;
         //align-items: center;
@@ -161,11 +161,11 @@
     }
 
     .content-outlet {
-        height: 100vh;
-        width: 100%;
-        border: 1px solid black;
-        border-radius: 6px;
+        //height: 100vh;
+        //width: 100%;
+        // border: 1px solid black;
+        // border-radius: 6px;
         margin: 4px;
-        background-color: rgb(154, 151, 151);
+        background-color: rgb(181, 206, 238);
     }
 }

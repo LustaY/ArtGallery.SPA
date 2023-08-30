@@ -16,21 +16,21 @@
   <!-- for left nav -->
   <div class="left-nav">
     <div class="categories">
-    <ol>
-      <li *ngFor="let cat of categories" routerLink="items/{{cat.id}}">
-        <div class="left-nav-list-categories">
-          <fa-icon *ngIf="!showLeftNav" [icon]="userIcon"></fa-icon>
-          <span *ngIf="showLeftNav">
-            <button (click)="catOpen(cat.id)">
-              {{cat.name}}
-            </button>
-          </span>
-        </div>
-      </li>
-    </ol>
-  </div>
+      <ol>
+        <li *ngFor="let cat of categories" routerLink="items/{{cat.id}}">
+          <div class="left-nav-list-categories">
+            <fa-icon *ngIf="!showLeftNav" [icon]="userIcon"></fa-icon>
+            <span *ngIf="showLeftNav">
+              <button (click)="catOpen(cat.id)">
+                {{cat.name}}
+              </button>
+            </span>
+          </div>
+        </li>
+      </ol>
+    </div>
     <div class="updates">
-    <button (click)="openDialog()">Updates</button>
+      <button (click)="openDialog()">Updates</button>
     </div>
     <div class="addCategory">
       <button (click)="addCategory()">
@@ -41,39 +41,12 @@
 
 
   </div>
-  
 
   <!-- for content -->
   <div class="content">
-    <div class="content-outlet">
+    <div class="content-outlet" style="align-items: center;">
       <router-outlet>
       </router-outlet>
     </div>
   </div>
 </div>
-
-
-<!-- <div class="left-nav">
-  <div class="brand">
-    <h2>
-      Art Gallery
-    </h2>
-  </div>
-  <ol>
-    <li *ngFor="let cat of categories" routerLink="items/{{cat.id}}">
-      <div class="left-nav-list-categories">
-        <fa-icon [icon]="userIcon"></fa-icon>
-        <span *ngIf="showLeftNav">
-            <button (click)="catOpen(cat.id)">
-                {{cat.name}}
-            </button>
-        </span>
-      </div>
-    </li>
-  </ol>
-</div>
-<button mat-raised-button (click)="openDialog()">Logs</button>
-
-<div class="content">
-  <router-outlet></router-outlet>
-</div> -->

@@ -4,7 +4,7 @@ import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject, debounceTime, switchMap } from 'rxjs';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../_services/category.service';
 import { Category } from '../_models/Category';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,52 +18,54 @@ import { ItemModalComponent } from '../item-modal/item-modal.component';
 export class ItemListComponent implements OnInit {
   public items: any;
   public pageItems: any;
-  categories: Category[]=[];
+  categories: Category[] = [];
   page: number = 1;
   itemsPerPage = 6;
-  totalItems : any; 
-  categoryId:number;
-  itemsOnPage:number=6;
-  
+  totalItems: any;
+  categoryId: number;
+  itemsOnPage: number = 6;
+
   public catId: any;
   public listComplet: any;
   public searchTerm: string;
   public searchValueChanged: Subject<string> = new Subject<string>();
 
   constructor(private router: Router,
-              private itemService: ItemService,
-              private toastr: ToastrService,
-              private confirmationDialogService: ConfirmationDialogService,
-              private categoryService: CategoryService,
-              private route: ActivatedRoute,
-              public dialog: MatDialog,
-              ) {
-                
-               }
+    private itemService: ItemService,
+    private toastr: ToastrService,
+    private confirmationDialogService: ConfirmationDialogService,
+    private categoryService: CategoryService,
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+  ) {
+
+  }
 
   ngOnInit() {
-    
+
+
     this.route.paramMap.subscribe(paramMap => {
-      this.page=1;
-      this.categoryId = Number(paramMap.get('id'));    // get param from dictonary
+      this.page = 1;
+      this.categoryId = Number(paramMap.get('id'));
       this.getItemsByCategory();
-      this.getPage(this.page);                    // load your data
-  });
+      this.getPage(this.page);    // get param from dictonary
+      // load your data
+    });
     //подписка на роутер.
     this.getCategories();
     //this.getValues();
 
     this.searchValueChanged.pipe(debounceTime(1000))
-    .subscribe(() => {
-      this.search();
-    });
+      .subscribe(() => {
+        this.search();
+      });
   }
 
-  getItemsByCategory(){
+  getItemsByCategory() {
     this.itemService.getItemsByCategory(this.categoryId).subscribe(item => {
       //this.items = item;
-      this.totalItems=item.length;
-      this.page=1;
+      this.totalItems = item.length;
+      this.page = 1;
     }, error => {
       this.items = [];
     });
@@ -75,12 +77,12 @@ export class ItemListComponent implements OnInit {
   //   }, error => {
   //     this.items = [];
   //   }); 
-    
 
-    // this.service.getItems().subscribe(items => {
-    //   this.items = items;
-    //   this.listComplet = items;
-    // });
+
+  // this.service.getItems().subscribe(items => {
+  //   this.items = items;
+  //   this.listComplet = items;
+  // });
   //}
 
   public addItem() {
@@ -105,34 +107,34 @@ export class ItemListComponent implements OnInit {
           }))
       .catch(() => '');
   }
-  
-  getCategories():void{
+
+  getCategories(): void {
     this.categoryService.getCategories()
-    .subscribe(categories => this.categories = categories);
+      .subscribe(categories => this.categories = categories);
   }
 
-  public getPage(page:number){
-    this.itemService.getItemsByPage(this.categoryId,this.page,this.itemsOnPage)
-    .subscribe((items)=>{
-      this.pageItems=items;
-    })
+  public getPage(page: number) {
+    this.itemService.getItemsByPage(this.categoryId, this.page, this.itemsOnPage)
+      .subscribe((items) => {
+        this.pageItems = items;
+      })
   }
 
   public searchItems() {
     this.searchValueChanged.next(void 0);
   }
-  
+
   private search() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.searchTerm !== '') {
       this.itemService.searchItemsWithCategory(this.searchTerm).subscribe(items => {
-        this.pageItems=[];
-        items.forEach((x)=>{
-          if(x.categoryId==id)
+        this.pageItems = [];
+        items.forEach((x) => {
+          if (x.categoryId == id)
             this.pageItems.push(x);
         })
-        this.totalItems=this.pageItems.length;
-        this.page=1;
+        this.totalItems = this.pageItems.length;
+        this.page = 1;
       }, error => {
         this.pageItems = [];
       });

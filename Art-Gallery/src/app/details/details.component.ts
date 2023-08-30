@@ -75,14 +75,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
     //this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
     this.route.paramMap.subscribe(paramMap => {
       this.id = Number(paramMap.get('id'));
-
+      
     });
 
-    this.itemService.getItemById(this.id)
-      .subscribe(item => {
-        this.itemDetail = item;
-        this.getFile(item.pictureUrl);
-      });
+    
+
     this.router.events.subscribe((event) => {
 
       this.randomAuthor = this.authors[Math.ceil((Math.random() * this.authors.length) - 1)];
@@ -91,12 +88,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.comments = comments;
         });
 
-
-
-
+        this.itemService.getItemById(this.id)
+        .subscribe(item => {
+          this.itemDetail = item;
+          this.getFile(item.pictureUrl);
+        });
 
       this.ratingService.getRatingsByItem(this.id)
         .subscribe(rating => {
+          this.itemRating=0;
           rating.forEach((x) => {
             this.itemRating += x.ratingValue;
           });
