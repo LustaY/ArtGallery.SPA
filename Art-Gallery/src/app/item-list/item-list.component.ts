@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ParamMap, Router } from '@angular/router';
 import { ItemService } from 'src/app/_services/item.service';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject, debounceTime, switchMap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../_services/category.service';
@@ -34,7 +33,6 @@ export class ItemListComponent implements OnInit {
   constructor(private router: Router,
     private itemService: ItemService,
     private toastr: ToastrService,
-    private confirmationDialogService: ConfirmationDialogService,
     private categoryService: CategoryService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -101,19 +99,6 @@ export class ItemListComponent implements OnInit {
 
   public viewDetails(itemId: number) {
     this.router.navigate(['/item-details/' + itemId]);
-  }
-
-  public deleteItem(itemId: number) {
-    this.confirmationDialogService.confirm('Atention', 'Do you really want to delete this item?')
-      .then(() =>
-        this.itemService.deleteItem(itemId).subscribe(() => {
-          this.toastr.success('The item has been deleted');
-          //this.getValues();
-        },
-          err => {
-            this.toastr.error('Failed to delete the item.');
-          }))
-      .catch(() => '');
   }
 
   getCategories(): void {

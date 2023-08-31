@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/_services/category.service';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationDialogService } from 'src/app/_services/confirmation-dialog.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -22,7 +21,7 @@ export class CategoryListComponent implements OnInit {
   constructor(private router: Router,
               private service: CategoryService,
               private toastr: ToastrService,
-              private confirmationDialogService: ConfirmationDialogService) { }
+              ) { }
 
   ngOnInit(): void {
     this.getCategories();
@@ -45,19 +44,6 @@ export class CategoryListComponent implements OnInit {
 
   public editCategory(categoryId: number) {
     this.router.navigate(['/category/' + categoryId]);
-  }
-
-  public deleteCategory(categoryId: number) {
-    this.confirmationDialogService.confirm('Atention', 'Do you really want to delete this category?')
-      .then(() =>
-        this.service.deleteCategory(categoryId).subscribe(() => {
-          this.toastr.success('The category has been deleted');
-          this.getCategories();
-        },
-          error => {
-            this.toastr.error('Failed to delete the category.');
-          }))
-      .catch(() => '');
   }
 
   public searchCategories() {
