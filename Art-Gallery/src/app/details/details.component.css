@@ -23,3 +23,12 @@ i {
 .example-item {
     height: 25px;
 }
+
+.backButton {
+    margin: 0 auto;
+    padding: 25px 50px;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

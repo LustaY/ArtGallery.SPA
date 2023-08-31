@@ -13,7 +13,7 @@ import { ItemModalComponent } from '../item-modal/item-modal.component';
 @Component({
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.css']
+  styleUrls: ['./item-list.component.scss']
 })
 export class ItemListComponent implements OnInit {
   public items: any;
@@ -23,7 +23,8 @@ export class ItemListComponent implements OnInit {
   itemsPerPage = 6;
   totalItems: any;
   categoryId: number;
-  itemsOnPage: number = 6;
+  pictureUrl:string;
+
 
   public catId: any;
   public listComplet: any;
@@ -61,6 +62,13 @@ export class ItemListComponent implements OnInit {
       });
   }
 
+  public getFile(name: string) {
+    this.itemService.getFileFromDisk(name).subscribe((file) => {
+      //console.log(file["sizes"]);
+      this.pictureUrl = file["href"];
+    })
+  }
+  
   getItemsByCategory() {
     this.itemService.getItemsByCategory(this.categoryId).subscribe(item => {
       //this.items = item;
@@ -114,7 +122,7 @@ export class ItemListComponent implements OnInit {
   }
 
   public getPage(page: number) {
-    this.itemService.getItemsByPage(this.categoryId, this.page, this.itemsOnPage)
+    this.itemService.getItemsByPage(this.categoryId, this.page, this.itemsPerPage)
       .subscribe((items) => {
         this.pageItems = items;
       })

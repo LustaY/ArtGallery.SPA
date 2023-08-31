@@ -36,12 +36,13 @@ export class ItemService {
         );
     }
 
-    public getFileFromDisk(name:string):Observable<JSON> {
-        return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/download?path=' + '/ArtGallery/' + name, { 'headers': this.headers })
+    public getFileFromDisk(url:string):Observable<JSON> {
+        return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/download?path=' + '/ArtGallery/' + url, { 'headers': this.headers })
+        //'https://cloud-api.yandex.net/v1/disk/resources/download?path=' + '/ArtGallery/' + 
     }
 
     public getSmallFileFromDisk(link:string):Observable<JSON> {
-        return this.http.get<JSON>(link, { 'headers': this.headers })
+        return this.http.get<JSON>('https://cloud-api.yandex.net/v1/disk/resources/download?path=' + '/ArtGallery/' + name, { 'headers': this.headers })
     }
 
     public getFileResourceFromDisk(name:string):Observable<JSON> {

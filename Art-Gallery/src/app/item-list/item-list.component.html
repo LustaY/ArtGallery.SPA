@@ -1,24 +1,22 @@
-<div class="row">
+<div class="row" style="align-content: center;">
   <div class="card col-5 p-1" *ngFor="let i = index; let item of pageItems
     | paginate: {
         itemsPerPage: itemsPerPage,
         currentPage: page,
         totalItems: totalItems
       }">
-    <div class="card-body">
-      <div class="form-group row">
-        <div class="col-8">
-          <a title="View" (click)="viewDetails(item.id)">
-            {{item.name}}
-          </a>
+    <div class="card-body" (click)="viewDetails(item.id)">
+      <a title="View" >
+        <div class="form-group row">
+          <div class="col-8" >
+            <img src="{{item.pictureUrl}}" style="height: 55vw; max-height: 100px;"/>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
 <button type="button" class="btn btn-success" (click)="addItem()">New item</button>
-
-
 <div class="form-group">
   <label for="Search">Search</label>
   <div class="input-group">

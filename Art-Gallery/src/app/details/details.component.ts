@@ -9,6 +9,7 @@ import { Comment } from '../_models/Comment';
 import { RatingService } from '../_services/rating.service';
 import { Rating } from '../_models/Rating';
 import { NavigationEvent } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details',
@@ -46,7 +47,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private commentService: CommentService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private location: Location,
   ) {
 
 
@@ -91,7 +93,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.itemService.getItemById(this.id)
         .subscribe(item => {
           this.itemDetail = item;
-          this.getFile(item.pictureUrl);
+          this.getFile(item.name);
         });
 
       this.ratingService.getRatingsByItem(this.id)
@@ -111,6 +113,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     //this.eventsSubscription.unsubscribe();
+  }
+
+  backClicked() {
+    this.location.back();
   }
 
   public getFile(name: string) {
@@ -138,23 +144,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   public onSubmitComment(form: NgForm) {
-    //form.value.categoryId = Number(form.value.categoryId);
-    this.insertRecord(form);
-  }
-
-  public insertRecord(form: NgForm) {
-    // let catId = this.formData.categoryId;
-    // this.itemService.addItem(form.form.value).subscribe(() => {
-    //   this.toastr.success('Registration successful');
-    //   this.resetForm(form);
-    //   //this.location.back();
-    //   this.router.navigate([`/items/${catId}`]);
-    // }, () => {
-    //   this.toastr.error('An error occurred on insert the record.');
-    // });
-    //let itemId = form.form.valu;
     let itemId = this.itemDetail.id;
-    console.log(form.form.value);
     this.commentService.addComment(form.form.value).subscribe(() => {
       this.toastr.success('Comment added succesfully');
       this.resetForm(form);
@@ -163,21 +153,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });
-  }
-
-  public updateRecord(form: NgForm) {
-    // let catId = this.formData.categoryId;
-    // this.itemService.updateItem(form.form.value.id, form.form.value).subscribe(() => {
-    //   this.toastr.success('Updated successful');
-    //   this.resetForm(form);
-    //   this.router.navigate([`/items/${catId}`]);
-    // }, () => {
-    //   this.toastr.error('An error occurred on update the record.');
-    // });
-  }
-
-  public cancel() {
-    //this.location.back();
   }
 
   private resetRating() {

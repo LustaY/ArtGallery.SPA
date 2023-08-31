@@ -18,6 +18,8 @@ export class ItemComponent implements OnInit {
   public categories: any;
   public filePath: any;
   public file: any | null = null
+  public itemsCount: number = 0;
+  public picUrl: string;
 
   constructor(
     public itemService: ItemService,
@@ -31,25 +33,14 @@ export class ItemComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
-    let id;
-    this.route.params.subscribe(params => {
-      id = params['id'];
-    });
-    if (id != null) {
-      this.itemService.getItemById(id).subscribe(item => {
-        this.formData = item;
-      }, err => {
-        this.toastr.error('An error occurred on get the record.');
-      });
-    } else {
-      this.resetForm();
-    }
 
     this.categoryService.getCategories().subscribe(categories => {
       this.categories = categories;
     }, err => {
       this.toastr.error('An error occurred on get the records.');
     });
+
+
   }
 
   public onSubmit(form: NgForm) {
@@ -61,32 +52,49 @@ export class ItemComponent implements OnInit {
     }
   }
 
-
-
-  public uploadFile() {
-    if (this.file) {
-      this.itemService.getUploadLink(this.formData.name).subscribe((link) => {
-        this.itemService.uploadFileOnDisk(link['href'], this.file).subscribe(() => {
-        });
-      })
-    }
-  }
-
   onChange(event: any) {
     const file: File = event.target.files[0]
     if (file) {
       this.file = file
+      this.itemService.getUploadLink(this.formData.name).subscribe((link) => {
+        this.itemService.uploadFileOnDisk(link['href'], this.file).subscribe(() => {
+          this.itemService.getFileFromDisk(this.formData.name).subscribe((getlink) => {
+            this.formData.pictureUrl = getlink["href"];
+            //console.log(this.formData.pictureUrl);
+          })
+        });
+      })
+      //console.log(this.formData.name)
+
     }
   }
 
   public insertRecord(form: NgForm) {
     let catId = this.formData.categoryId;
+    //form.value.pictureUrl=this.uploadFile();
+    //console.log(form.value.pictureUrl);
     this.itemService.addItem(form.form.value).subscribe(() => {
       this.toastr.success('Registration successful');
-      this.uploadFile();
+      // this.itemService.getItems().subscribe((items) => {
+      //   console.log(items);
+      //   if (items.length > 1) {
+      //     this.itemsCount = items.sort((a, b) => {
+      //       if (a.id < b.id) return -1;
+      //       else if (a.id > b.id) return 1;
+      //       else return 0;
+      //     })[items.length - 1].id;
+      //     console.log(this.itemsCount);
+      //   }
+      //   else if (items.length = 1) {
+      //     this.itemsCount = items[1].id;
+      //     console.log(this.itemsCount);
+      //   }
+        
+      // })
       this.resetForm(form);
-      this.dialogRef.close();
-      this.router.navigate([`/items/${catId}`]);
+        this.dialogRef.close();
+        this.router.navigate([`/items/${catId}/`]);
+
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });

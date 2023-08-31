@@ -14,6 +14,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CategoryComponent implements OnInit {
   public formData: any;
+  public categoriesCount:number;
   
 
   constructor(public categoryService: CategoryService,
@@ -25,20 +26,7 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
-    // let id;
-    // this.route.params.subscribe(params => {
-    //   id = params['id'];
-    // });
-
-    // if (id != null) {
-    //   this.service.getCategoryById(id).subscribe(category => {
-    //     this.formData = category;
-    //   }, error => {
-    //     this.toastr.error('An error occurred on get the record.');
-    //   });
-    // } else {
-    //   this.resetForm();
-    // }
+    this.getCategories();
   }
 
  private resetForm(form?: NgForm) {
@@ -53,6 +41,11 @@ export class CategoryComponent implements OnInit {
     };
   }
 
+  public getCategories(){
+    this.categoryService.getCategories().subscribe((categories)=>{
+      this.categoriesCount=categories.length;
+    })
+  }
   public onSubmit(form: NgForm) {
     if (form.value.id === 0) {
       this.insertRecord(form);
@@ -66,7 +59,7 @@ export class CategoryComponent implements OnInit {
       this.toastr.success('Registration successful');
       this.resetForm(form);
       this.dialogRef.close();
-      this.router.navigate([`/`]);
+      this.router.navigate([`/items/${this.categoriesCount+1}`]);
     }, () => {
       this.toastr.error('An error occurred on insert the record.');
     });

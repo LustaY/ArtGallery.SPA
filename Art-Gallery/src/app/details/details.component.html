@@ -2,7 +2,7 @@
   <tr>
     <td>
       <div>
-        <img src="{{pictureUrl}}" style="width: 55vw; max-width: 330px;"/>
+        <img *ngIf="itemDetail" src="{{itemDetail.pictureUrl}}" style="width: 55vw; max-width: 330px;"/>
       </div>
     </td>
     <td style="vertical-align: top;">
@@ -30,9 +30,6 @@
           <ngb-rating [(rate)]="itemRating" [starTemplate]="t" [readonly]="false" [max]="5"></ngb-rating>
         </tr>
         <h2>Comments:</h2>
-        <!-- <tr *ngFor="let comment of comments">
-                    {{comment.commentAuthor}}: {{comment.commentValue}}
-                </tr> -->
         <tr>
           <cdk-virtual-scroll-viewport itemSize="25" class="example-viewport">
             <div *cdkVirtualFor="let comment of comments" class="example-item">
@@ -43,7 +40,6 @@
       </table>
       <div *ngIf="itemDetail">
         <form #form="ngForm" (submit)="onSubmitComment(form)" autocomplete="off" class="col-md-5 form">
-          <h1 class="text-center text-primary">Add a comment</h1>
           <input type="hidden" name="id" #id="ngModel" [(ngModel)]="commentData.id">
           <input type="hidden" name="itemId" #itemId="ngModel" [(ngModel)]="itemDetail.id">
           <input type="hidden" name="commentAuthor" #commentAuthor="ngModel" [(ngModel)]="randomAuthor" />
@@ -56,60 +52,11 @@
             </div>
           </div>
           <div class="form-group text-center">
-            <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Save</button>
-            <!-- <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button> -->
+            <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Send</button>
           </div>
         </form>
       </div>
     </div>
   </tr>
 </table>
-
-
-
-
-<!--<input name="name" #name="ngModel" [(ngModel)]="formData.name" class="form-control" required
-          [ngClass]="{'is-invalid': form.controls['name']?.invalid && form.controls['name']?.touched}" placeholder="Name">
-         <div class="invalid-feedback" *ngIf="name.invalid && name.touched">Please inform the item's name.</div>
-      <div class="form-group">
-        <input name="author" #author="ngModel" [(ngModel)]="formData.author" class="form-control" placeholder="Author"
-          [ngClass]="{'is-invalid': form.controls['author']?.invalid && form.controls['author']?.touched}" required>
-        <div class="invalid-feedback" *ngIf="author.invalid && author.touched">Please inform the author's name.</div>
-      </div>
-      <div class="form-group">
-        <textarea name="description" #description="ngModel" [(ngModel)]="formData.description" class="form-control"
-          placeholder="Description"
-          [ngClass]="{'is-invalid': form.controls['description']?.invalid && form.controls['description']?.touched}"
-          required rows="4"></textarea>
-        <div class="invalid-feedback" *ngIf="description.invalid && description.touched">Please inform the description
-        </div>
-      </div>
-      <div class="form-group">
-        <select class="form-control" name="categoryId" #categoryId [(ngModel)]="formData.categoryId" required>
-          <option value="null" disabled selected hidden>Category</option>
-          <option *ngFor="let category of categories" value="{{category.id}}">
-            {{category.name}}
-          </option>
-        </select>
-        <div class="invalid-feedback" *ngIf="categoryId.invalid && categoryId.touched">Please inform the category</div>
-      </div>
-      <div class="form-group">
-        <input name="price" #price="ngModel" [(ngModel)]="formData.price" class="form-control" placeholder="Price"
-          type="number" [ngClass]="{'is-invalid': form.controls['price']?.invalid && form.controls['price']?.touched}"
-          >
-        <div class="invalid-feedback" *ngIf="price.invalid && price.touched">Please inform the price</div>
-      </div>
-      <div class="form-group">
-        <textarea name="location" #location="ngModel" [(ngModel)]="formData.location" class="form-control"
-          placeholder="Location"
-          [ngClass]="{'is-invalid': form.controls['location']?.invalid && form.controls['location']?.touched}"
-           rows="4"></textarea>
-        <div class="invalid-feedback" *ngIf="location.invalid && location.touched">Please inform the location
-        </div>
-      </div>
-      <div class="form-group text-center">
-        <button class="btn btn-success mr-2" [disabled]="form.invalid" type="submit">Save</button>
-        <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
-      </div>
-  
-    </form> -->
+<button class="backButton" (click)="backClicked()">Back</button>
